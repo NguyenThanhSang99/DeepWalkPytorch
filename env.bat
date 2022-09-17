@@ -1,0 +1,1 @@
+call DeepWalk/Scripts/activate
