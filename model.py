@@ -4,6 +4,7 @@ import torch.nn as nn
 
 from torch import LongTensor as LT
 from torch import FloatTensor as FT
+import torch
 
 
 class Bundler(nn.Module):
@@ -40,6 +41,7 @@ class Word2Vec(Bundler):
         return self.ivectors(v)
 
     def forward_o(self, data):
+        data = data.to(torch.int64)
         v = LT(data)
         v = v.cuda() if self.ovectors.weight.is_cuda else v
         return self.ovectors(v)

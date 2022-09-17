@@ -1,7 +1,7 @@
 import importlib.util
 import sys
 import random
-from word2vec import Word2Vec
+from skipgram import Skipgram
 
 spec = importlib.util.spec_from_file_location("graph", "graph.py")
 graph = importlib.util.module_from_spec(spec)
@@ -15,10 +15,9 @@ spec.loader.exec_module(walks)
 
 
 def main():
-    number_walks = 2
-    number_workers = 4
-    walk_length = 2
-    data_path = "data/edges.csv"
+    number_walks = 80
+    walk_length = 40
+    data_path = "data/data.edgelist"
 
     G = graph.load_data(data_path)
 
@@ -33,12 +32,14 @@ def main():
     walks = graph.build_deepwalk_corpus(G, num_paths=number_walks,
                                       path_length=walk_length, alpha=0, rand=random.Random(0))
 
-    representation_size = 1000
-    window_size = 2
+    representation_size = 128
+    window_size = 10
 
-    model = Word2Vec(walks, size=representation_size, window=window_size, min_count=0, sg=1, hs=1, workers=4, compute_loss=True)
+    model = Skipgram(walks, size=representation_size, window=window_size, min_count=0, sg=1, hs=1, workers=1, compute_loss=True)
 
-    #model = Skipgram(walks_corpus, vertex_counts, representation_size, window_size, 0)
+    output_model = "data/data.embeddings"
+
+    model.save_emb(output_model, len(G.nodes()))
 
 if __name__ == '__main__':
     main()

@@ -63,7 +63,7 @@ def load_data(file, undirected=True):
 
     with open(file) as f:
         for l in f:
-            x, y = l.strip().split(',')[:2]
+            x, y = l.strip().split()[:2]
             x = int(x)
             y = int(y)
             graph[x].append(y)

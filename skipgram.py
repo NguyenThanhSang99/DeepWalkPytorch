@@ -31,7 +31,7 @@ class PermutedSubsampledCorpus(Dataset):
         return iword, np.array(owords)
 
 
-class Word2Vec():
+class Skipgram():
     def __init__(self,sentences=None,
             corpus_file=None, 
             size=100, 
@@ -126,5 +126,5 @@ class Word2Vec():
 
 if __name__ == "__main__":
         data = np.array(np.random.randint(0,13210, size=(13210, 80)),str)
-        w2v = ModWord2Vec(data)
+        w2v = Skipgram(data)
         w2v.save_emb("embedding.npy",13210)

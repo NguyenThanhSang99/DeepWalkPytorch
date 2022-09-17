@@ -1,19 +1,6 @@
 import os
 import codecs
 import pickle
-import argparse
-
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--data_dir', type=str, default='./data/', help="data directory path")
-    parser.add_argument('--vocab', type=str, default='./data/corpus.txt', help="corpus path for building vocab")
-    parser.add_argument('--corpus', type=str, default='./data/corpus.txt', help="corpus path")
-    parser.add_argument('--unk', type=str, default='<UNK>', help="UNK token")
-    parser.add_argument('--window', type=int, default=5, help="window size")
-    parser.add_argument('--max_vocab', type=int, default=20000, help="maximum number of vocab")
-    return parser.parse_args()
-
 
 class Preprocess(object):
 
@@ -23,6 +10,9 @@ class Preprocess(object):
         self.data = data
         self.max_vocab = max_vocab
 
+    """
+        Skipgram algorithm
+    """
     def skipgram(self, sentence, i):
         iword = sentence[i]
         left = sentence[max(i - self.window, 0): i]
@@ -31,13 +21,13 @@ class Preprocess(object):
 
     def build(self):
         max_vocab = self.max_vocab
-        print("building vocab...")
+        print("building vocabulary...")
         step = 0
         self.wc = {self.unk: 1}
         for line in self.data:
             step += 1
             if not step % 1000:
-                print("working on {}kth line".format(step // 1000), end='\r')
+                print("Running out of {}k lines".format(step // 1000), end='\r')
             sent = line
             for word in sent:
                 self.wc[word] = self.wc.get(word, 0) + 1
@@ -45,7 +35,7 @@ class Preprocess(object):
         self.idx2word = [self.unk] + sorted(self.wc, key=self.wc.get, reverse=True)[:max_vocab - 1]
         self.word2idx = {self.idx2word[idx]: idx for idx, _ in enumerate(self.idx2word)}
         self.vocab = set([word for word in self.word2idx])
-        print("build done")
+        print("Build vocabulary has been done!")
         return self.idx2word, self.word2idx, self.vocab, self.wc
 
     def convert(self):
@@ -55,7 +45,7 @@ class Preprocess(object):
         for line in self.data:
             step += 1
             if not step % 1000:
-                print("working on {}kth line".format(step // 1000), end='\r')
+                print("Running out of {}k lines".format(step // 1000), end='\r')
             
             sent = []
             for word in line:
