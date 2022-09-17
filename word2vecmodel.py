@@ -31,7 +31,7 @@ class PermutedSubsampledCorpus(Dataset):
         return iword, np.array(owords)
 
 
-class Skipgram():
+class Word2VecModel():
     def __init__(self,sentences=None,
             corpus_file=None, 
             size=100, 
@@ -117,14 +117,15 @@ class Skipgram():
         idx2vec = model.ivectors.weight.data.cpu().numpy()
         return idx2vec
 
-    def save_emb(self, savepath, num_nodes):
-        perm = np.array([self.word2idx[str(word)] for word in range(num_nodes)])
+    def save_emb(self, savepath, nodes):
+        perm = np.array([self.word2idx[str(word)] for word in nodes])
         emb = self.idx2vec[perm]
         np.save(savepath , emb)
 
 
 
 if __name__ == "__main__":
-        data = np.array(np.random.randint(0,13210, size=(13210, 80)),str)
-        w2v = Skipgram(data)
-        w2v.save_emb("embedding.npy",13210)
+    data = np.array(np.random.randint(0,13210, size=(13210, 80)),str)
+
+    w2v = Word2VecModel(data)
+    w2v.save_emb("embedding.npy",13210)

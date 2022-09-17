@@ -56,7 +56,6 @@ class Graph(defaultdict):
             else:
                 break
         return [str(node) for node in path]
-
     
 def load_data(file, undirected=True):
     graph = Graph()
