@@ -26,9 +26,11 @@ def main():
     representation_size = 128
     window_size = 10
 
-    model = Word2VecModel(walks_graph, size=representation_size, window=window_size, min_count=0, sg=1, hs=1, workers=1, compute_loss=True)
+    model = Word2VecModel(walks_graph, size=representation_size, window=window_size, iter=50, min_count=0, sg=1, hs=1, workers=4, compute_loss=True)
 
     output_model = "data/data.embeddings"
+
+    print(model.idx2vec)
 
     model.save_emb(output_model, G.nodes())
 

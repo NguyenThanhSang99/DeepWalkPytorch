@@ -17,8 +17,4 @@
 
 ### To build model:
 
-- Running `python train_model.py`
-
-### Test model:
-
-- Running `python predict.py`
+- Running `python main.py`
