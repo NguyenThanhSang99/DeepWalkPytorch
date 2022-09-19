@@ -56,15 +56,5 @@ class Preprocess(object):
             for i in range(len(sent)):
                 iword, owords = self.skipgram(sent, i)
                 data.append((self.word2idx[iword], [self.word2idx[oword] for oword in owords]))
-        print("")
-        #pickle.dump(data, open(os.path.join(self.data_dir, 'train.dat'), 'wb'))
         print("conversion done")
         return data
-
-if __name__ == '__main__':
-    args = parse_args()
-    import numpy as np
-    data = np.array(np.random.randint(0,10312, (10312, 80)),dtype=str)
-    preprocess = Preprocess(data,window=args.window, unk=args.unk)
-    preprocess.build(max_vocab=args.max_vocab)
-    preprocess.convert()

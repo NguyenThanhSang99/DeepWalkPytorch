@@ -14,7 +14,6 @@ from preprocess import Preprocess
 
 class PermutedSubsampledCorpus(Dataset):
     def __init__(self, data, ws=None):
-        #data = pickle.load(open(datapath, 'rb'))
         if ws is not None:
             self.data = []
             for iword, owords in data:
@@ -121,11 +120,3 @@ class Word2VecModel():
         perm = np.array([self.word2idx[str(word)] for word in nodes])
         emb = self.idx2vec[perm]
         np.save(savepath , emb)
-
-
-
-if __name__ == "__main__":
-    data = np.array(np.random.randint(0,13210, size=(13210, 80)),str)
-
-    w2v = Word2VecModel(data)
-    w2v.save_emb("embedding.npy",13210)
