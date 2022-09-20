@@ -2,6 +2,8 @@
 import torch
 import torch.nn as nn
 import random
+import pandas as pd
+import matplotlib.pyplot as plt
 
 def read_data(path):
     f = open(path, 'r', encoding='utf8')
@@ -76,14 +78,19 @@ def main():
 
     #### Hyperparameters ####
     window_size  = 3            # window size
-    embedding_size  = 5         # embedding size
-    number_walks = 200          # walks per vertex
+    embedding_size  = 2         # embedding size
+    number_walks = 50          # walks per vertex
     walk_length  = 6            # walk length
     learning_rate = 0.025       # learning rate
 
     model = DeepWalk(data, embedding_size, window_size, number_walks, walk_length, learning_rate)
 
-    print(model.phi)
+
+    embedded = model.phi.tolist()
+    print(embedded)
+
+    plt.plot(embedded, 'o')
+    plt.show()
 
 if __name__ == '__main__':
     main()
